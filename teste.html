@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Histórias</title>
+</head>
+<body>
+<h1>Gerador de Histórias</h1>
+<div id="output"></div>
+
+<script>
+// Função para gerar a história
+function gerarHistoria() {
+    var nome = prompt("Qual é o nome da personagem?");
+    var idade = validarNumeroInteiro("Quantos anos a personagem tem?", 0);
+    var nacionalidade = prompt("De qual país a personagem é?");
+    var ano_chegada = null;
+    if (nacionalidade.toLowerCase() !== "portugal") {
+        ano_chegada = validarNumeroInteiro("Ano de quando a personagem veio para Portugal?");
+    }
+    var irmaos = coletarIrmaos();
+    var animal_estimacao = coletarAnimalEstimacao();
+    var hobby = prompt("Qual é o hobby da personagem?");
+    var caracteristicas = prompt("Descreva a personagem com algumas características (separadas por vírgula):");
+
+    // Gerar a história
+    var historia = nome + " é um(a) jovem de " + idade + " anos, natural de " + nacionalidade + ". ";
+
+    if (ano_chegada) {
+        var anos_de_chegada = new Date().getFullYear() - ano_chegada;
+        var idade_chegada = idade - anos_de_chegada;
+        historia += "Chegou a Portugal em " + ano_chegada + " com aproximadamente " + idade_chegada + " anos. ";
+    } else {
+        historia += "Veio para Portugal em uma idade mais jovem. ";
+    }
+
+    if (irmaos.length > 0) {
+        historia += "Cresceu em uma família com " + irmaos.length + " irmãos: " + irmaos.join(', ') + ". ";
+    }
+
+    if (animal_estimacao) {
+        historia += "Tem um(a) " + animal_estimacao + " como animal de estimação. ";
+    }
+
+    if (hobby) {
+        historia += "Seu hobby é " + hobby + ". ";
+    }
+
+    historia += nome + " é conhecido por ser " + caracteristicas + ".";
+
+    // Exibir a história
+    document.getElementById('output').innerText = historia;
+}
+
+// Função para validar um número inteiro
+function validarNumeroInteiro(mensagem, min_value) {
+    while (true) {
+        var numero = parseInt(prompt(mensagem));
+        if (!isNaN(numero) && numero >= min_value) {
+            return numero;
+        }
+        alert("Por favor, insira um número inteiro válido maior ou igual a " + min_value + ".");
+    }
+}
+
+// Função para coletar os irmãos
+function coletarIrmaos() {
+    var irmaos = [];
+    var tem_irmao = prompt("A personagem tem irmãos? (sim/não)").toLowerCase();
+    if (tem_irmao === "sim") {
+        var num_irmaos = validarNumeroInteiro("Quantos irmãos a personagem tem?", 0);
+        for (var i = 0; i < num_irmaos; i++) {
+            var irmao_nome = prompt("Qual é o nome do " + (i+1) + "º irmão ou irmã da personagem?");
+            irmaos.push(irmao_nome);
+        }
+    }
+    return irmaos;
+}
+
+// Função para coletar o animal de estimação
+function coletarAnimalEstimacao() {
+    var tem_animal = prompt("A personagem tem um animal de estimação? (sim/não)").toLowerCase();
+    if (tem_animal === "sim") {
+        var tipo_animal = prompt("Que tipo de animal de estimação a personagem tem?");
+        var nome_animal = prompt("Qual é o nome do animal de estimação da personagem?");
+        return tipo_animal + " chamado(a) " + nome_animal;
+    } else {
+        return "";
+    }
+}
+
+// Chamada para gerar a história quando a página é carregada
+gerarHistoria();
+</script>
+</body>
+</html>
